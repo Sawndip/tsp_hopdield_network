@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../nwta/nwta.h
+vector
+-
+
+C:/Users/sesip/source/repos/helloworl/main.cpp
+nwta.h
+C:/Users/sesip/source/repos/helloworl/nwta.h
+vector
+-
+iostream
+-
+string
+-
+fstream
+-
+random
+-
+

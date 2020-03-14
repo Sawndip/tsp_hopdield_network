@@ -1,0 +1,6 @@
+C:/Users/sesip/source/repos/helloworl/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/sesip/source/repos/helloworl/cmake-build-debug/CMakeFiles/main.dir
+C:/Users/sesip/source/repos/helloworl/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/sesip/source/repos/helloworl/cmake-build-debug/nwta/CMakeFiles/nwta.dir
+C:/Users/sesip/source/repos/helloworl/cmake-build-debug/nwta/CMakeFiles/edit_cache.dir
+C:/Users/sesip/source/repos/helloworl/cmake-build-debug/nwta/CMakeFiles/rebuild_cache.dir

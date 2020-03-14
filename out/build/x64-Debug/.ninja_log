@@ -1,0 +1,9 @@
+# ninja log v5
+12	696	605092549	CMakeFiles/main.dir/main.cpp.obj	97ab4fbb8d1d1fa6
+1	999	605092549	CMakeFiles/foo.dir/foo.cpp.obj	d42bb5f75a1ac8f6
+999	1065	605092549	foo.lib	f61722c693d5a678
+1065	1490	605092549	main.exe	528c764733ab0aad
+1	301	605092873	CMakeFiles/main.dir/main.cpp.obj	38148d042183e6de
+8	544	605092873	foo/CMakeFiles/foo.dir/foo.cpp.obj	3379bc887f60240c
+544	597	605092873	foo/foo.lib	b61a634948bcde53
+597	855	605092873	main.exe	4943f4cd9fc87bf6

@@ -1,6 +1,0 @@
-C:/Users/sesip/source/repos/tsp_hopfield_network/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-C:/Users/sesip/source/repos/tsp_hopfield_network/out/build/x64-Debug/CMakeFiles/main.dir
-C:/Users/sesip/source/repos/tsp_hopfield_network/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
-C:/Users/sesip/source/repos/tsp_hopfield_network/out/build/x64-Debug/nwta/CMakeFiles/nwta.dir
-C:/Users/sesip/source/repos/tsp_hopfield_network/out/build/x64-Debug/nwta/CMakeFiles/edit_cache.dir
-C:/Users/sesip/source/repos/tsp_hopfield_network/out/build/x64-Debug/nwta/CMakeFiles/rebuild_cache.dir

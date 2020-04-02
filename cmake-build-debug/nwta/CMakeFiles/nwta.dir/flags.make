@@ -6,5 +6,5 @@ CXX_FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -IC:\Users\sesip\source\repos\helloworl\nwta 
+CXX_INCLUDES = -IC:\Users\sesip\source\repos\tsp_hopfield_network\nwta 
 

@@ -49,10 +49,10 @@ RM = "C:\Program Files\JetBrains\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\sesip\source\repos\helloworl
+CMAKE_SOURCE_DIR = C:\Users\sesip\source\repos\tsp_hopfield_network
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -81,18 +81,18 @@ rebuild_cache\fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sesip\source\repos\helloworl\cmake-build-debug\CMakeFiles C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta\CMakeFiles\progress.marks
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\CMakeFiles C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta\CMakeFiles\progress.marks
 	$(MAKE) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) nwta\all
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sesip\source\repos\helloworl\cmake-build-debug\CMakeFiles 0
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) nwta\clean
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : clean
 
 # The main clean target
@@ -102,30 +102,30 @@ clean\fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) nwta\preinstall
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall\fast:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) nwta\preinstall
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : preinstall\fast
 
 # clear depends
 depend:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : depend
 
 # Convenience name for target.
 nwta\CMakeFiles\nwta.dir\rule:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\rule
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : nwta\CMakeFiles\nwta.dir\rule
 
 # Convenience name for target.
@@ -135,10 +135,43 @@ nwta: nwta\CMakeFiles\nwta.dir\rule
 
 # fast build rule for target.
 nwta\fast:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f nwta\CMakeFiles\nwta.dir\build.make /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\build
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : nwta\fast
+
+2opt\2opt.obj: 2opt\2opt.cpp.obj
+
+.PHONY : 2opt\2opt.obj
+
+# target to build an object file
+2opt\2opt.cpp.obj:
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+	$(MAKE) -f nwta\CMakeFiles\nwta.dir\build.make /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.obj
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
+.PHONY : 2opt\2opt.cpp.obj
+
+2opt\2opt.i: 2opt\2opt.cpp.i
+
+.PHONY : 2opt\2opt.i
+
+# target to preprocess a source file
+2opt\2opt.cpp.i:
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+	$(MAKE) -f nwta\CMakeFiles\nwta.dir\build.make /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.i
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
+.PHONY : 2opt\2opt.cpp.i
+
+2opt\2opt.s: 2opt\2opt.cpp.s
+
+.PHONY : 2opt\2opt.s
+
+# target to generate assembly for a file
+2opt\2opt.cpp.s:
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+	$(MAKE) -f nwta\CMakeFiles\nwta.dir\build.make /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.s
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
+.PHONY : 2opt\2opt.cpp.s
 
 nwta.obj: nwta.cpp.obj
 
@@ -146,9 +179,9 @@ nwta.obj: nwta.cpp.obj
 
 # target to build an object file
 nwta.cpp.obj:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f nwta\CMakeFiles\nwta.dir\build.make /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\nwta.cpp.obj
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : nwta.cpp.obj
 
 nwta.i: nwta.cpp.i
@@ -157,9 +190,9 @@ nwta.i: nwta.cpp.i
 
 # target to preprocess a source file
 nwta.cpp.i:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f nwta\CMakeFiles\nwta.dir\build.make /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\nwta.cpp.i
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : nwta.cpp.i
 
 nwta.s: nwta.cpp.s
@@ -168,9 +201,9 @@ nwta.s: nwta.cpp.s
 
 # target to generate assembly for a file
 nwta.cpp.s:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(MAKE) -f nwta\CMakeFiles\nwta.dir\build.make /nologo -$(MAKEFLAGS) nwta\CMakeFiles\nwta.dir\nwta.cpp.s
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : nwta.cpp.s
 
 # Help Target
@@ -182,6 +215,9 @@ help:
 	@echo ... nwta
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... 2opt/2opt.obj
+	@echo ... 2opt/2opt.i
+	@echo ... 2opt/2opt.s
 	@echo ... nwta.obj
 	@echo ... nwta.i
 	@echo ... nwta.s
@@ -196,8 +232,8 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 .PHONY : cmake_check_build_system
 

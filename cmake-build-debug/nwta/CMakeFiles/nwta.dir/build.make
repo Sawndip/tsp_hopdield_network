@@ -44,10 +44,10 @@ RM = "C:\Program Files\JetBrains\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\sesip\source\repos\helloworl
+CMAKE_SOURCE_DIR = C:\Users\sesip\source\repos\tsp_hopfield_network
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include nwta\CMakeFiles\nwta.dir\depend.make
@@ -60,46 +60,73 @@ include nwta\CMakeFiles\nwta.dir\flags.make
 
 nwta\CMakeFiles\nwta.dir\nwta.cpp.obj: nwta\CMakeFiles\nwta.dir\flags.make
 nwta\CMakeFiles\nwta.dir\nwta.cpp.obj: ..\nwta\nwta.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\sesip\source\repos\helloworl\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object nwta/CMakeFiles/nwta.dir/nwta.cpp.obj"
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object nwta/CMakeFiles/nwta.dir/nwta.cpp.obj"
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx86\x86\cl.exe @<<
- /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\nwta.dir\nwta.cpp.obj /FdCMakeFiles\nwta.dir\nwta.pdb /FS -c C:\Users\sesip\source\repos\helloworl\nwta\nwta.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\nwta.dir\nwta.cpp.obj /FdCMakeFiles\nwta.dir\nwta.pdb /FS -c C:\Users\sesip\source\repos\tsp_hopfield_network\nwta\nwta.cpp
 <<
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 
 nwta\CMakeFiles\nwta.dir\nwta.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/nwta.dir/nwta.cpp.i"
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx86\x86\cl.exe > CMakeFiles\nwta.dir\nwta.cpp.i @<<
- /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\sesip\source\repos\helloworl\nwta\nwta.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\sesip\source\repos\tsp_hopfield_network\nwta\nwta.cpp
 <<
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 
 nwta\CMakeFiles\nwta.dir\nwta.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/nwta.dir/nwta.cpp.s"
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx86\x86\cl.exe @<<
- /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\nwta.dir\nwta.cpp.s /c C:\Users\sesip\source\repos\helloworl\nwta\nwta.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\nwta.dir\nwta.cpp.s /c C:\Users\sesip\source\repos\tsp_hopfield_network\nwta\nwta.cpp
 <<
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+
+nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.obj: nwta\CMakeFiles\nwta.dir\flags.make
+nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.obj: ..\nwta\2opt\2opt.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object nwta/CMakeFiles/nwta.dir/2opt/2opt.cpp.obj"
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
+	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx86\x86\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\nwta.dir\2opt\2opt.cpp.obj /FdCMakeFiles\nwta.dir\nwta.pdb /FS -c C:\Users\sesip\source\repos\tsp_hopfield_network\nwta\2opt\2opt.cpp
+<<
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+
+nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/nwta.dir/2opt/2opt.cpp.i"
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
+	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx86\x86\cl.exe > CMakeFiles\nwta.dir\2opt\2opt.cpp.i @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\sesip\source\repos\tsp_hopfield_network\nwta\2opt\2opt.cpp
+<<
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+
+nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/nwta.dir/2opt/2opt.cpp.s"
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
+	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx86\x86\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\nwta.dir\2opt\2opt.cpp.s /c C:\Users\sesip\source\repos\tsp_hopfield_network\nwta\2opt\2opt.cpp
+<<
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 
 # Object files for target nwta
 nwta_OBJECTS = \
-"CMakeFiles\nwta.dir\nwta.cpp.obj"
+"CMakeFiles\nwta.dir\nwta.cpp.obj" \
+"CMakeFiles\nwta.dir\2opt\2opt.cpp.obj"
 
 # External object files for target nwta
 nwta_EXTERNAL_OBJECTS =
 
 nwta\nwta.lib: nwta\CMakeFiles\nwta.dir\nwta.cpp.obj
+nwta\nwta.lib: nwta\CMakeFiles\nwta.dir\2opt\2opt.cpp.obj
 nwta\nwta.lib: nwta\CMakeFiles\nwta.dir\build.make
 nwta\nwta.lib: nwta\CMakeFiles\nwta.dir\objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\sesip\source\repos\helloworl\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library nwta.lib"
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library nwta.lib"
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 	$(CMAKE_COMMAND) -P CMakeFiles\nwta.dir\cmake_clean_target.cmake
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx86\x86\link.exe /lib /nologo /machine:X86 /out:nwta.lib @CMakeFiles\nwta.dir\objects1.rsp 
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 
 # Rule to build all files generated by this target.
 nwta\CMakeFiles\nwta.dir\build: nwta\nwta.lib
@@ -107,12 +134,12 @@ nwta\CMakeFiles\nwta.dir\build: nwta\nwta.lib
 .PHONY : nwta\CMakeFiles\nwta.dir\build
 
 nwta\CMakeFiles\nwta.dir\clean:
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta
 	$(CMAKE_COMMAND) -P CMakeFiles\nwta.dir\cmake_clean.cmake
-	cd C:\Users\sesip\source\repos\helloworl\cmake-build-debug
+	cd C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug
 .PHONY : nwta\CMakeFiles\nwta.dir\clean
 
 nwta\CMakeFiles\nwta.dir\depend:
-	$(CMAKE_COMMAND) -E cmake_depends "NMake Makefiles" C:\Users\sesip\source\repos\helloworl C:\Users\sesip\source\repos\helloworl\nwta C:\Users\sesip\source\repos\helloworl\cmake-build-debug C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta C:\Users\sesip\source\repos\helloworl\cmake-build-debug\nwta\CMakeFiles\nwta.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "NMake Makefiles" C:\Users\sesip\source\repos\tsp_hopfield_network C:\Users\sesip\source\repos\tsp_hopfield_network\nwta C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta C:\Users\sesip\source\repos\tsp_hopfield_network\cmake-build-debug\nwta\CMakeFiles\nwta.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : nwta\CMakeFiles\nwta.dir\depend
 

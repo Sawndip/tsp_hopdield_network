@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/sesip/source/repos/helloworl/nwta
+# Install script for directory: C:/Users/sesip/source/repos/tsp_hopfield_network/nwta
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

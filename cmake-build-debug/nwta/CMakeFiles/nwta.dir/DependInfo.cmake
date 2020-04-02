@@ -4,7 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/sesip/source/repos/helloworl/nwta/nwta.cpp" "C:/Users/sesip/source/repos/helloworl/cmake-build-debug/nwta/CMakeFiles/nwta.dir/nwta.cpp.obj"
+  "C:/Users/sesip/source/repos/tsp_hopfield_network/nwta/2opt/2opt.cpp" "C:/Users/sesip/source/repos/tsp_hopfield_network/cmake-build-debug/nwta/CMakeFiles/nwta.dir/2opt/2opt.cpp.obj"
+  "C:/Users/sesip/source/repos/tsp_hopfield_network/nwta/nwta.cpp" "C:/Users/sesip/source/repos/tsp_hopfield_network/cmake-build-debug/nwta/CMakeFiles/nwta.dir/nwta.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "MSVC")
 

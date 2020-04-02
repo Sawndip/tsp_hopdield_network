@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/sesip/source/repos/helloworl/nwta
+# Install script for directory: C:/Users/sesip/source/repos/tsp_hopfield_network/nwta
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/sesip/source/repos/helloworl/out/install/x64-Debug")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/sesip/source/repos/tsp_hopfield_network/out/install/x64-Debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

@@ -6,9 +6,11 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <random>
+#include <chrono>
+
+
 using namespace std;
-vector<vector<double>> getDistMatrix(string& name, double p, int iStart){
+vector<vector<double>> getDistMatrix(string& name){
     fstream problem(R"(C:\Users\sesip\source\repos\helloworl\tsp\)" + name +".txt");
     int n;
     problem >> n;
@@ -16,18 +18,33 @@ vector<vector<double>> getDistMatrix(string& name, double p, int iStart){
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            double d;
-            problem >> d;
-            if (i == iStart) {
-                dist[i][j] = p;
-            } else {
-                dist[i][j] = d;
-            }
+            problem >> dist[i][j];
         }
     }
 
     problem.close();
     return dist;
+}
+
+
+vector<vector<double>> getDistMatrixWithNalog(vector<vector<double>>& dist, int iStart, double p) {
+    vector<vector<double>> newDist(dist.size(), vector<double>(dist.size(), 0));
+
+    for (int i = 0; i < dist.size(); i++) {
+        for (int j = 0; j < dist.size(); j++) {
+            newDist[i][j] = dist[i][j];
+
+            if (i == j) {
+                newDist[i][j] = pow(10, 5);
+            }
+
+            if (j == iStart) {
+                newDist[i][j] *= p;
+            }
+        }
+    }
+
+    return newDist;
 }
 
 int main(int argc, char** argv)
@@ -39,47 +56,29 @@ int main(int argc, char** argv)
     double eps = pow(10, -5);
     double p = pow(10,6);
     int iStart = 0;
-    double deltaT = pow(10, -5);
+    double deltaT = 0.025;
 
-    string name = "gr17";
-    vector<vector<double>> dist = getDistMatrix(name, p, iStart);
+    string name = "a280";
+    vector<vector<double>> dist = getDistMatrix(name);
+    vector<vector<double>> distWithNalog = getDistMatrixWithNalog(dist, iStart, p);
+
     int n = dist.size();
-    minstd_rand simple_rand;
-    simple_rand.seed(42);
+    time_t t;
 
-    vector<vector<double>> startVal(n, vector<double>(n, 0));
-    ofstream f("C:\\Users\\sesip\\source\\repos\\helloworl\\a.txt");
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            startVal[i][j] = double(simple_rand() % 100) / 100 - (1. / 2.);
-            f << startVal[i][j] << ' ';
-        }
+    srand((unsigned) time(&t));
+
+    for (unsigned int i = 0; i < 10; i++) {
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+        double pathLen = solve(dist, distWithNalog, n, beta, eta, lambda, tau, eps, deltaT, iStart);
+
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << " s" << std::endl;
+        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
+
+        cout << pathLen << endl;
     }
 
-
-    vector<vector<double>> nwtaRes = solveNwta(startVal, dist, n, beta,  eta, lambda, tau, eps, deltaT);
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cout << nwtaRes[i][j] << ' ';
-        }
-
-        cout << endl;
-    }
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-
-    wta(nwtaRes, n, iStart);
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cout << nwtaRes[i][j] << ' ';
-        }
-
-        cout << endl;
-    }
     return 0;
 }
 

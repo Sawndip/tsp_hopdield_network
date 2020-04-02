@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/nwta.dir/2opt/2opt.cpp.obj"
   "CMakeFiles/nwta.dir/nwta.cpp.obj"
   "nwta.lib"
   "nwta.pdb"

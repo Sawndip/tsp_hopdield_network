@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/helloworl.iml" filepath="$PROJECT_DIR$/.idea/helloworl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/tsp_hopfield_network.iml" filepath="$PROJECT_DIR$/.idea/tsp_hopfield_network.iml" />
     </modules>
   </component>
 </project>

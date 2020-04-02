@@ -1,9 +1,6 @@
 # ninja log v5
-12	696	605092549	CMakeFiles/main.dir/main.cpp.obj	97ab4fbb8d1d1fa6
-1	999	605092549	CMakeFiles/foo.dir/foo.cpp.obj	d42bb5f75a1ac8f6
-999	1065	605092549	foo.lib	f61722c693d5a678
-1065	1490	605092549	main.exe	528c764733ab0aad
-1	301	605092873	CMakeFiles/main.dir/main.cpp.obj	38148d042183e6de
-8	544	605092873	foo/CMakeFiles/foo.dir/foo.cpp.obj	3379bc887f60240c
-544	597	605092873	foo/foo.lib	b61a634948bcde53
-597	855	605092873	main.exe	4943f4cd9fc87bf6
+10	1231	607568312	nwta/CMakeFiles/nwta.dir/2opt/2opt.cpp.obj	dac62adf098c0874
+1	1251	607568312	CMakeFiles/main.dir/main.cpp.obj	8330c0f8a74d6496
+6	1258	607568312	nwta/CMakeFiles/nwta.dir/nwta.cpp.obj	f0d7f00831e50c1b
+1259	1330	607568312	nwta/nwta.lib	c45880ba0143ff76
+1330	1804	607568313	main.exe	25f555d1ab8215ef

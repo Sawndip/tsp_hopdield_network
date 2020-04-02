@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/sesip/source/repos/helloworl/main.cpp" "C:/Users/sesip/source/repos/helloworl/cmake-build-debug/CMakeFiles/main.dir/main.cpp.obj"
+  "C:/Users/sesip/source/repos/tsp_hopfield_network/main.cpp" "C:/Users/sesip/source/repos/tsp_hopfield_network/cmake-build-debug/CMakeFiles/main.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "MSVC")
 
@@ -15,7 +15,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "C:/Users/sesip/source/repos/helloworl/cmake-build-debug/nwta/CMakeFiles/nwta.dir/DependInfo.cmake"
+  "C:/Users/sesip/source/repos/tsp_hopfield_network/cmake-build-debug/nwta/CMakeFiles/nwta.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

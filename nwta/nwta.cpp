@@ -16,11 +16,13 @@ void printMatrix(vector<vector<double>> &m) {
         cout << endl;
     }
 }
+
 template<class T>
 void printVec(vector<T>& vec) {
     for (int i=0; i<n; i++) {
         cout << vec[i] << ' ';
     }
+
     cout << endl;
 }
 
@@ -59,6 +61,7 @@ double sumByCols(vector<vector<double>> &v, int i) {
 int getMaxIdx(vector<double > &v) {
     double max = 0;
     int maxIdx = 0;
+
     for (int i = 0; i < v.size(); i++) {
         if (v[i] > max) {
             max = v[i];
@@ -123,7 +126,7 @@ void fillColWithZeros(vector<vector<double>> &v, int colIdx) {
     }
 }
 
-int wta(vector<vector<double>> &v, int n, int iStart) {
+bool wta(vector<vector<double>> &v, int n, int iStart) {
     int i = iStart;
     int count = 0;
 
@@ -148,6 +151,7 @@ vector<int> getPathByMatrix(vector<vector<double>>& m, int iStart) {
     vector<int> path = vector<int>(m.size(), 0);
     int count = 0;
     int i = iStart;
+
     while (count < m.size()){
         int jMax = getMaxIdx(m[i]);
         path[count] = jMax;
@@ -172,6 +176,18 @@ double getLenByPath(vector<vector<double>>& d, vector<int> path) {
     return len;
 }
 
+vector<vector<double>> generateRandMatr(int n) {
+    vector<vector<double>> startVal(n, vector<double>(n, 0));
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            startVal[i][j] = (float)rand() / RAND_MAX - 0.5;
+        }
+    }
+
+    return startVal;
+}
+
 double solve(
         vector<vector<double>>& dist,
         vector<vector<double>>& distWithNalog,
@@ -188,22 +204,16 @@ double solve(
     vector<vector<double>> nwtaRes;
     fstream startData(R"(C:\Users\sesip\source\repos\helloworl\nwta\2opt\startData.txt)");
 
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    chrono::steady_clock::time_point begin = chrono::steady_clock::now();
 
     while (!noCycles) {
-        vector<vector<double>> startVal(n, vector<double>(n, 0));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                startVal[i][j] = (float) rand() / RAND_MAX - 0.5;
-            }
-        }
-
+        vector<vector<double>> startVal(generateRandMatr(n));
         nwtaRes = solveNwta(startVal, distWithNalog, n, beta,  eta, lambda, tau, eps, deltaT);
         noCycles = wta(nwtaRes, n, iStart);
         cout << noCycles << '\n';
     }
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cout << "Time nwta difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
+    chrono::steady_clock::time_point end = chrono::steady_clock::now();
+    cout << "Time nwta difference = " << std::duration_cast<chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
     vector<int> path = getPathByMatrix(nwtaRes, iStart);
 

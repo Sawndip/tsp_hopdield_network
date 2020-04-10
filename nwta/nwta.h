@@ -28,5 +28,6 @@ double solve(
 
 void printMatrix(vector<vector<double>> &m);
 
-template<typename  T>
-void printVec(vector<T>& vec);
+vector<vector<double>> generateRandMatr(int n);
+int getMaxIdx(vector<double >& v);
+void fillColWithZeros(vector<vector<double>>& v, int colIdx);

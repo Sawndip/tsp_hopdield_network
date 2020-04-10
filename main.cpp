@@ -1,17 +1,15 @@
-// awtf.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include "nwta.h"
+#include "dnq.h"
 #include <vector>
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <chrono>
 
-
 using namespace std;
+
 vector<vector<double>> getDistMatrix(string& name){
-    fstream problem(R"(C:\Users\sesip\source\repos\helloworl\tsp\)" + name +".txt");
+    fstream problem(R"(C:\Users\sesip\source\repos\tsp_hopfield_network\tsp\)" + name +".txt");
     int n;
     problem >> n;
     vector<vector<double>> dist(n, vector<double>(n, 0));
@@ -25,7 +23,6 @@ vector<vector<double>> getDistMatrix(string& name){
     problem.close();
     return dist;
 }
-
 
 vector<vector<double>> getDistMatrixWithNalog(vector<vector<double>>& dist, int iStart, double p) {
     vector<vector<double>> newDist(dist.size(), vector<double>(dist.size(), 0));
@@ -58,37 +55,54 @@ int main(int argc, char** argv)
     int iStart = 0;
     double deltaT = 0.025;
 
-    string name = "a280";
-    vector<vector<double>> dist = getDistMatrix(name);
-    vector<vector<double>> distWithNalog = getDistMatrixWithNalog(dist, iStart, p);
+    //string name = "a280";
+    //vector<vector<double>> dist = getDistMatrix(name);
+    //vector<vector<double>> distWithNalog = getDistMatrixWithNalog(dist, iStart, p);
 
-    int n = dist.size();
+    //int n = dist.size();
+    int n = 10;
+
     time_t t;
 
     srand((unsigned) time(&t));
+    vector<vector<double>> tmp = {
+        {10, 0.43, 0.82, 0.85, 0.74, 0.1, 0.22, 0.25, 0.37, 0.35},
+        {0.43, 10, 0.8, 0.75, 0.4, 0.34, 0.2, 0.1, 0.8, 0.6},
+        {0.82, 0.8, 10, 0.2, 0.6, 0.7, 0.75, 0.7, 0.1, 0.70},
+        {0.85, 0.75, 0.2, 10, 0.5, 0.8, 0.85, 0.8, 0.1, 0.8},
+        {0.74,0.4, 0.6, 0.5, 10, 0.75, 0.7, 0.64, 0.68, 9.99},
+        {0.1, 0.34, 0.7, 0.8, 0.75, 10, 0.1, 0.25, 0.8, 0.4},
+        {0.22, 0.2, 0.75, 0.85, 0.7, 0.1, 10, 0.14, 9.99, 0.5},
+        {0.25, 0.1, 0.7, 0.8, 0.64, 0.25, 0.14, 10, 0.9, 0.6},
+        {0.37, 0.8, 0.1, 0.1, 0.68, 0.8, 9.99, 0.9, 10, 0.8},
+        {0.35, 0.6, 0.7, 0.8, 9.99, 0.4, 0.5, 0.6, 0.8, 10}
+    };
 
-    for (unsigned int i = 0; i < 10; i++) {
-        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    vector<vector<double>> dist(closestNeigboursMatrix(tmp, 3));
 
-        double pathLen = solve(dist, distWithNalog, n, beta, eta, lambda, tau, eps, deltaT, iStart);
-
-        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << " s" << std::endl;
-        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
-
-        cout << pathLen << endl;
+    for (int i = 0; i < 10; i++) {
+        vector<vector<double>> u(generateRandMatr(n));
+        vector<vector<double>> res(solveNwta(u, dist, n, beta, eta, lambda, tau, eps, deltaT));
+        cout << "Chains: " << endl;
+        vector<vector<int>> wtaWithCycles(res, n);
+        cout << endl;
+        cout << "Res: " << endl;
+        printMatrix(res);
+        cout << endl;
     }
 
-    return 0;
+
+    //for (unsigned int i = 0; i < 10; i++) {
+    //    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+    //    double pathLen = solve(dist, distWithNalog, n, beta, eta, lambda, tau, eps, deltaT, iStart);
+
+    //    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    //    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << " s" << std::endl;
+    //    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
+
+    //    cout << pathLen << endl;
+    //}
+
+    //return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

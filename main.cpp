@@ -78,20 +78,64 @@ int main(int argc, char** argv)
         {0.35, 0.6, 0.7, 0.8, 9.99, 0.4, 0.5, 0.6, 0.8, 10}
     };
 
-    vector<vector<double>> dist(closestNeigboursMatrix(tmp, 3));
+    //vector<vector<double>> dist(closestNeigboursMatrix(tmp, 3));
 
-    for (int i = 0; i < 10; i++) {
-        vector<vector<double>> u(generateRandMatr(n));
-        vector<vector<double>> res(solveNwta(u, dist, n, beta, eta, lambda, tau, eps, deltaT));
-        cout << "Chains: " << endl;
-        vector<vector<int>> wtaWithCycles(res, n);
+    //for (int i = 0; i < 10; i++) {
+    //    vector<vector<double>> u(generateRandMatr(n));
+    //    vector<vector<double>> res(solveNwta(u, dist, n, beta, eta, lambda, tau, eps, deltaT));
+    //    cout << "Chains: " << endl;
+    //    vector<vector<int>> chains(wtaWithCycles(res, n));
+    //    cout << endl;
+    //    cout << "Res: " << endl;
+    //    printMatrix(res);
+    //    cout << endl;
+    //}
+
+    vector<vector<int>> testChains = {
+        {2, 8, 3},
+        {0, 5, 6, 7, 1},
+        {4}, {9}
+    };
+    double K = 0;
+    for (int i = 0; i < testChains.size(); i++) {
+        if (testChains[i].size() > 1) {
+            K++;
+        }
+    }
+    if (testChains.size() == 1) {
+        cout << "SOLVED" << endl;
+        for (int i = 0; i < testChains[0].size(); i++) {
+            cout << testChains[0][i] << ' ';
+        }
+
         cout << endl;
-        cout << "Res: " << endl;
-        printMatrix(res);
-        cout << endl;
+    } else {
+        vector<vector<double>> newD = getDistanceMatrixForSecondPhase(tmp, testChains);
+        printMatrix(newD);
+        double minD = INT_MAX;
+        double maxD = 0;
+        
+        for(int i = 0; i < newD.size(); i++) {
+            for (int j = 0; j < newD[0].size(); j++) {
+                if (newD[i][j] > maxD) {
+                    maxD = newD[i][j];
+                } else if (newD[i][j] != 0 && newD[i][j] < minD) {
+                    minD = newD[i][j];
+                }
+            }
+        }
+         
+        double C = 0.001;
+        double N = newD.size() + K + 3/C;
+        double A = 3 + C;
+        double B = A + minD/maxD;
+        double D = 1 / maxD;
+
+        vector<vector<double>> v = chnSimulation(newD, A, B, C, D, N, testChains);
+        printMatrix(v);
     }
 
-
+    return 0;
     //for (unsigned int i = 0; i < 10; i++) {
     //    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 

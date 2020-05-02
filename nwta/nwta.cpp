@@ -9,7 +9,7 @@ using namespace std;
 
 void printMatrix(vector<vector<double>> &m) {
     for (int i = 0; i < m.size(); i++) {
-        for (int j = 0; j < m.size(); j++) {
+        for (int j = 0; j < m[i].size(); j++) {
             cout << m[i][j] << ' ';
         }
 
@@ -213,7 +213,7 @@ double solve(
         cout << noCycles << '\n';
     }
     chrono::steady_clock::time_point end = chrono::steady_clock::now();
-    cout << "Time nwta difference = " << std::duration_cast<chrono::milliseconds>(end - begin).count() << " ms" << endl;
+    cout << "Time nwta difference = " << chrono::duration_cast<chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
     vector<int> path = getPathByMatrix(nwtaRes, iStart);
 

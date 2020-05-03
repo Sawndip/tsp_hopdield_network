@@ -16,5 +16,8 @@ vector<vector<double>> chnSimulation(
 	double C,
 	double D,
 	double N,
+	int K,
 	vector<vector<int>> &chains
 );
+
+vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, vector<vector<int>>& chains);

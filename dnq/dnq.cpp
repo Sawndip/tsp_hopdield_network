@@ -76,13 +76,13 @@ vector<vector<int>> wtaWithCycles(vector<vector<double>>& v, int n) {
 		}
 	}
 
-	for (int i = 0; i < chains.size(); i++) {
-		for (int j = 0; j < chains[i].size(); j++) {
-			cout << chains[i][j] << ' ';
-		}
+	//for (int i = 0; i < chains.size(); i++) {
+	//	for (int j = 0; j < chains[i].size(); j++) {
+	//		cout << chains[i][j] << ' ';
+	//	}
 
-		cout << endl;
-	}
+	//	cout << endl;
+	//}
 
 	return chains;
 }
@@ -149,8 +149,9 @@ vector<vector<double>> generateRandMatr(int n, int m) {
 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
+			//startVal[i][j] = 0.5 + pow(10, 7) * ((double)rand() / RAND_MAX - 0.5);
 
-			startVal[i][j] = 0.5 + pow(10, -7) * ((double)rand() / RAND_MAX - 0.5);
+			startVal[i][j] = 0.5 + ((double)rand() / RAND_MAX - 0.5);
 		}
 	}
 
@@ -159,10 +160,9 @@ vector<vector<double>> generateRandMatr(int n, int m) {
 double Txiyj(
 	vector<vector<double>>& d,
 	int x, int i, int y, int j,
-	double A, double B, double C, double D,
+	double A, double B, double C, double D, int m,
 	unordered_map<int, int>& neighbours
 ) {
-	int m = 4;
     int xc;
     int yc;
 
@@ -185,10 +185,10 @@ double Txiyj(
 	);
 }
 
-vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double B, double C, double D, double N, vector<vector<int>> &chains) {
+vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double B, double C, double D, double N, int K, vector<vector<int>> &chains) {
 	double u_zero = 1;
 	int n = d.size();
-	int m = 4;
+	int m = n - K;
 	double eps = 0.000001;
 	unordered_map<int, int> neigboursMap = getNeghiborsMap(chains);
 	vector<vector<double>> v = generateRandMatr(n, m);
@@ -212,7 +212,7 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 				
 				for (int y = 0; y < n; y++) {
 					for (int j = 0; j < m; j++) {
-						du += (Txiyj(d, x, i, y, j, A, B, C, D, neigboursMap)*v[y][j]);
+						du += (Txiyj(d, x, i, y, j, A, B, C, D, m, neigboursMap)*v[y][j]);
 					}
 				}
 
@@ -258,7 +258,7 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
             for (int i = 0; i < m; i++) {
                 for (int y = 0; y < n; y++) {
                     for (int j = 0; j < m; j++) {
-                        secondSum += dv[x][i] * Txiyj(d, x, i, y, j, A, B, C, D, neigboursMap) * dv[y][j];
+                        secondSum += dv[x][i] * Txiyj(d, x, i, y, j, A, B, C, D, m, neigboursMap) * dv[y][j];
                     }
                 }
             }
@@ -288,5 +288,69 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 		iter++;
 	}
 
+	return v;
+}
+
+
+vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, vector<vector<int>>& chains) {
+    vector<vector<double>> newD = getDistanceMatrixForSecondPhase(originalDist, chains);
+	printMatrix(newD);
+
+	int K = 0;
+	for (int i = 0; i < chains.size(); i++) {
+		if (chains[i].size() > 1) {
+			K++;
+		}
+	}
+	double minD = INT_MAX;
+    double maxD = 0;
+    
+    for(int i = 0; i < newD.size(); i++) {
+        for (int j = 0; j < newD[0].size(); j++) {
+            if (newD[i][j] > maxD) {
+                maxD = newD[i][j];
+            } else if (newD[i][j] != 0 && newD[i][j] < minD) {
+                minD = newD[i][j];
+            }
+        }
+    }
+     
+    double C = 0.001;
+    double N = newD.size() + K + 3/C;
+    double A = 3 + C;
+    double B = A + minD/maxD;
+    double D = 1 / maxD;
+
+    vector<vector<double>> v = chnSimulation(newD, A, B, C, D, N, K, chains);
+
+    printMatrix(v);
+	//for (int x = 0; x < newD.size(); x++) {
+	//	for (int i = 0; i < newD.size() - K; i++) {
+	//		if (v[x][i] != 1) {
+	//			
+	//		}
+	//	}
+	//}
+	unordered_map<int, vector<int>> chainsMap;
+
+	for (int i = 0; i < chains.size(); i++) {
+		chainsMap[chains[i][0]] = chains[i];
+		chainsMap[chains[i][chains[i].size() - 1]] = chains[i];
+		reverse(begin(chainsMap[chains[i][chains[i].size() - 1]]), end(chainsMap[chains[i][chains[i].size() - 1]]));
+		int a = 0;
+	}
+
+	vector<int> asd = getNewProblemSize(chains);
+
+	for (int i = 0; i < v[0].size(); i++) {
+		for (int x = 0; x < v.size(); x++) {
+			if (v[x][i] == 1) {
+				vector<int> chain = chainsMap[asd[x]];
+				for (int k = 0; k < chain.size(); k++) {
+					cout << chain[k] << endl;
+				}
+			}
+		}
+	}
 	return v;
 }

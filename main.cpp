@@ -84,11 +84,14 @@ int main(int argc, char** argv)
         vector<vector<double>> u(generateRandMatr(n));
         vector<vector<double>> res(solveNwta(u, dist, n, beta, eta, lambda, tau, eps, deltaT));
         vector<vector<int>> chains(wtaWithCycles(res, n));
+        cout << "CHAINS: " << endl;
+
+        printMatrix<int>(chains);
 
         if (chains.size() > 1) {
             res = solveSecondPhase(tmp, chains);
-            return 0;
         }
+
         else {
             cout << "Chains: " << endl;
             for (int i = 0; i < chains[0].size(); i++) {
@@ -104,7 +107,7 @@ int main(int argc, char** argv)
         }
        /* cout << endl;
         cout << "Res: " << endl;
-        printMatrix(res);
+        printMatrix<double>(res);
         cout << endl;*/
     }
 

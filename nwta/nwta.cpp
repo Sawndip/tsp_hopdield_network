@@ -7,16 +7,6 @@
 
 using namespace std;
 
-void printMatrix(vector<vector<double>> &m) {
-    for (int i = 0; i < m.size(); i++) {
-        for (int j = 0; j < m[i].size(); j++) {
-            cout << m[i][j] << ' ';
-        }
-
-        cout << endl;
-    }
-}
-
 template<class T>
 void printVec(vector<T>& vec) {
     for (int i=0; i<n; i++) {

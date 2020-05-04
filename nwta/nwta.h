@@ -26,8 +26,16 @@ double solve(
         int iStart
 );
 
-void printMatrix(vector<vector<double>> &m);
+template<class T>
+void printMatrix(vector<vector<T>>& m) {
+    for (int i = 0; i < m.size(); i++) {
+        for (int j = 0; j < m[i].size(); j++) {
+            cout << m[i][j] << ' ';
+        }
 
+        cout << endl;
+    }
+}
 vector<vector<double>> generateRandMatr(int n);
 int getMaxIdx(vector<double >& v);
 void fillColWithZeros(vector<vector<double>>& v, int colIdx);

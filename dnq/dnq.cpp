@@ -185,9 +185,8 @@ double Txiyj(
 	);
 }
 
-vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double B, double C, double D, double N, int K, vector<vector<int>> &chains) {
+vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double B, double C, double D, double N, int n, int K, vector<vector<int>> &chains) {
 	double u_zero = 1;
-	int n = d.size();
 	int m = n - K;
 	double eps = 0.000001;
 	unordered_map<int, int> neigboursMap = getNeghiborsMap(chains);
@@ -199,6 +198,7 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 	bool cont = true;
 	int maxIter = 1000;
 	double dt = 0.001;
+    vector<int> cities = getNewProblemSize(chains);
 
 	while (iter < maxIter && cont) {
 		double firstSum = 0;
@@ -207,12 +207,14 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 		double  minK = -INT_MAX;
 		double  maxK = INT_MAX;
 		for (int x = 0; x < n; x++) {
+		    int x_c = cities[x];
 			for (int i = 0; i < m; i++) {
 				double du = 0;
 				
 				for (int y = 0; y < n; y++) {
+				    int y_c = cities[y];
 					for (int j = 0; j < m; j++) {
-						du += (Txiyj(d, x, i, y, j, A, B, C, D, m, neigboursMap)*v[y][j]);
+						du += (Txiyj(d, x_c, i, y_c, j, A, B, C, D, m, neigboursMap)*v[y][j]);
 					}
 				}
 
@@ -255,10 +257,12 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 		}
 
         for (int x = 0; x < n; x++) {
+            int x_c = cities[x];
             for (int i = 0; i < m; i++) {
                 for (int y = 0; y < n; y++) {
+                    int y_c = cities[y];
                     for (int j = 0; j < m; j++) {
-                        secondSum += dv[x][i] * Txiyj(d, x, i, y, j, A, B, C, D, m, neigboursMap) * dv[y][j];
+                        secondSum += dv[x][i] * Txiyj(d, x_c, i, y_c, j, A, B, C, D, m, neigboursMap) * dv[y][j];
                     }
                 }
             }
@@ -294,10 +298,13 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 
 vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, vector<vector<int>>& chains) {
     vector<vector<double>> newD = getDistanceMatrixForSecondPhase(originalDist, chains);
-	printMatrix(newD);
+/*
+	printMatrix<double>(newD);
+*/
 
 	int K = 0;
-	for (int i = 0; i < chains.size(); i++) {
+
+	for(int i = 0; i < chains.size(); i++) {
 		if (chains[i].size() > 1) {
 			K++;
 		}
@@ -321,9 +328,10 @@ vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, ve
     double B = A + minD/maxD;
     double D = 1 / maxD;
 
-    vector<vector<double>> v = chnSimulation(newD, A, B, C, D, N, K, chains);
+    vector<vector<double>> v = chnSimulation(originalDist, A, B, C, D, N, newD.size(), K, chains);
+    cout << "MATRIX V:" << endl;
 
-    printMatrix(v);
+    printMatrix<double>(v);
 	//for (int x = 0; x < newD.size(); x++) {
 	//	for (int i = 0; i < newD.size() - K; i++) {
 	//		if (v[x][i] != 1) {
@@ -341,7 +349,7 @@ vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, ve
 	}
 
 	vector<int> asd = getNewProblemSize(chains);
-
+    cout << "NEW CHAINS: " << endl;
 	for (int i = 0; i < v[0].size(); i++) {
 		for (int x = 0; x < v.size(); x++) {
 			if (v[x][i] == 1) {

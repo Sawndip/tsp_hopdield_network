@@ -16,6 +16,7 @@ vector<vector<double>> chnSimulation(
 	double C,
 	double D,
 	double N,
+	int n,
 	int K,
 	vector<vector<int>> &chains
 );

@@ -1,4 +1,4 @@
-#include "dnq.h"
+﻿#include "dnq.h"
 #include "nwta.h"
 #include <vector>
 #include <queue>
@@ -6,6 +6,9 @@
 #include <numeric>
 #include <unordered_map>
 #include <algorithm>
+#include <armadillo>
+using namespace arma;
+
 
 using namespace std;
 
@@ -103,10 +106,8 @@ unordered_map<int, int> getNeghiborsMap(vector<vector<int>>& chains) {
 	unordered_map<int, int> umap;
 
 	for (int i = 0; i < chains.size(); i++) {
-		if (chains[i].size() > 1) {
-			umap[chains[i][0]] = chains[i][chains[i].size() - 1];
-			umap[chains[i][chains[i].size() - 1]] = chains[i][0];
-		}
+		umap[chains[i][0]] = chains[i][chains[i].size() - 1];
+		umap[chains[i][chains[i].size() - 1]] = chains[i][0];
 	}
 
 	return umap;
@@ -118,17 +119,17 @@ vector<vector<double>> getDistanceMatrixForSecondPhase(
 	vector<int> citiesVec(getNewProblemSize(chains));
 	unordered_map<int, int> neighborsMap = getNeghiborsMap(chains);
 
-	int n = citiesVec.size();
+	int n = dist.size();
 	vector<vector<double>> newDist(n, vector<double>(n, 0.));
 	
 	for (int i = 0; i < n; i++) {
 		for (int j = i; j < n; j++) {
-			if (i == j || neighborsMap[citiesVec[i]] == citiesVec[j]) {
+			if (i == j || neighborsMap.find(i) == neighborsMap.end()|| neighborsMap.find(j) == neighborsMap.end() || neighborsMap[i] == j) {
 				newDist[i][j] = 0;
 			}
 			else {
-				newDist[i][j] = dist[citiesVec[i]][citiesVec[j]];
-				newDist[j][i] = dist[citiesVec[i]][citiesVec[j]];
+				newDist[i][j] = dist[i][j];
+				newDist[j][i] = dist[i][j];
 			}
 		}
 	}
@@ -149,9 +150,9 @@ vector<vector<double>> generateRandMatr(int n, int m) {
 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
-			//startVal[i][j] = 0.5 + pow(10, 7) * ((double)rand() / RAND_MAX - 0.5);
+			startVal[i][j] = 0.5 + pow(10, -7) * ((double)rand() / RAND_MAX - 0.5);
 
-			startVal[i][j] = 0.5 + ((double)rand() / RAND_MAX - 0.5);
+			//startVal[i][j] = 0.5 + ((double)rand() / RAND_MAX - 0.5);
 		}
 	}
 
@@ -172,11 +173,13 @@ double Txiyj(
         xc = neighbours[x];
     }
     if (neighbours.find(y) == neighbours.end()) {
-        yc = x;
+        yc = y;
     } else {
         yc = neighbours[y];
     }
 
+	double a = d[yc][x];
+	double b = d[xc][y];
 	return -(
 		A * kd(x, y) * (1 + kd(x, xc)) * (1 - kd(i, j))
 		+ B * (1 - kd(x, y)) * kd(i, j)
@@ -186,7 +189,7 @@ double Txiyj(
 }
 
 vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double B, double C, double D, double N, int n, int K, vector<vector<int>> &chains) {
-	double u_zero = 1;
+	double u_zero = 0.1;
 	int m = n - K;
 	double eps = 0.000001;
 	unordered_map<int, int> neigboursMap = getNeghiborsMap(chains);
@@ -197,7 +200,7 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 	int iter = 0;
 	bool cont = true;
 	int maxIter = 1000;
-	double dt = 0.001;
+	double dt = 0.00001;
     vector<int> cities = getNewProblemSize(chains);
 
 	while (iter < maxIter && cont) {
@@ -224,9 +227,6 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
 				if (dv[x][i] != 0) {
 					double left = -v[x][i] / dv[x][i];
 					double right = (1 - v[x][i]) / dv[x][i];
-
-					double a = v[x][i] + left * dv[x][i];
-					double b = v[x][i] + right * dv[x][i];
 
 					if (left > right) {
 						if (left < maxK) {
@@ -267,8 +267,8 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
                 }
             }
         }
-		double tpm = firstSum / secondSum;
-        if (secondSum < 0) {
+
+		if (secondSum < 0) {
             dt = min(maxK, -firstSum / secondSum) ;
         } else {
             dt = maxK;
@@ -291,22 +291,269 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
         cont = maxDif > eps;
 		iter++;
 	}
-
+	cout << "ITER:: " << iter << endl;
 	return v;
+}
+
+mat invTransormFunc(double u_zero, mat& v) {
+	return u_zero / 2 * log(v / (1 - v));
+}
+
+double invTransormFunc(double u_zero, double v) {
+	return u_zero / 2 * log(v / (1 - v));
+}
+
+mat transferFcn(double u_zero, mat v) {
+	return 0.5 * (1 + tanh(v / u_zero));	
+}
+
+mat weightMatrixTimesVvectorized(colvec& sumVrow, rowvec& sumVcol, double sumV, mat& v, int n, int K, mat& dist, double A, double B, double C, double D) {
+	uvec deltaPrev(n - K);
+	uvec deltaNext(n - K);
+
+	deltaPrev(0) = n - K - 1;
+	deltaNext(n - K - 1) = 0;
+
+	for (int i = 1; i < n - K; i++) {
+		deltaPrev(i) = i - 1;
+		deltaNext(i-1) = i;
+	}
+	uvec tmp = linspace<uvec>(0, 2 * K - 1, 2 * K);
+	uvec reOrder(reshape(flipud(reshape(tmp, 2, K)), 2 * K, 1));
+
+	mat termA(repmat(sumVrow, 1, size(v, 1)) - v);
+
+	termA.rows(0, 2 * K - 1) = termA.rows(0, 2 * K - 1) + termA.rows(reOrder);
+	if (2 * K < termA.n_rows) {
+		termA.rows(2 * K, termA.n_rows - 1) = 2 * termA.rows(2 * K, termA.n_rows - 1);
+	}
+
+	mat termB = repmat(sumVcol, size(v, 0), 1) - v;
+
+	mat dycx(dist);
+	mat dxcy(dist);
+
+	dycx.cols(0, 2 * K - 1) = dycx.cols(reOrder);
+
+	dxcy.rows(0, 2 * K - 1) = dxcy.rows(reOrder);
+
+	// Шляпа какая-то если не буде работать, надо будет разобраться с этой хуйнкй
+	//dycx(1:length(dycx) + 1 : end) = 0;
+	//dxcy(1:length(dycx) + 1 : end) = 0;
+
+	mat termD = dxcy * v.cols(deltaNext) + dycx * v.cols(deltaPrev);
+
+	return -A * termA - B * termB - C * sumV - D * termD;
+}
+
+mat fromMatlab(vector<vector<int>>& chains, vector<vector<double>>& dist, double C) {
+	C = 1e-5;
+	double energy = 0.;
+	int R_iter = 20;
+	double Q = 0.8;
+	double E = 13;
+	double u_zero = 0.3;
+
+	vector<double> chainsEndpoint;
+	vector<double> singleCities;
+
+	int n = 0;
+	int K = 0;
+	for (int i = 0; i < chains.size(); i++) {
+		n++;
+		if (chains[i].size() > 1) {
+			chainsEndpoint.push_back(chains[i][0]);
+			chainsEndpoint.push_back(chains[i][chains[i].size() - 1]);
+			K++;
+			n++;
+		}
+		else {
+			singleCities.push_back(chains[i][0]);
+		}
+	}
+
+	chainsEndpoint.insert(chainsEndpoint.end(), singleCities.begin(), singleCities.end());
+
+	vec newCities(chainsEndpoint);
+	mat newDistMat(n, n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (i == j) {
+				newDistMat(i, i) = 0;
+			}
+			else {
+				newDistMat(i, j) = dist[newCities(i)][newCities(j)];
+			}
+		}
+	}
+
+
+	for (int x = 0; x < 2 * K; x += 2) {
+		newDistMat(x + 1, x) = 0;
+		newDistMat(x, x + 1) = 0;
+	}
+
+	mat distanceToIgnore = ones(n, n);
+
+	for (int i = 1; i < K; i++) {
+		distanceToIgnore.submat(2 * (i - 1), 2 * (i - 1), 2 * i - 1, 2 * i - 1) = zeros(2, 2);
+	}
+
+	for (int i = K; i < n; i++) {
+		distanceToIgnore(i, i) = 0.;
+	}
+
+
+	double dUpper = newDistMat.max();
+	newDistMat /= dUpper;
+	double dUaux = dUpper;
+	dUpper = 1;
+
+	double dL = newDistMat(find(newDistMat > 0)).min();
+
+	double D = 1 / dUpper;
+	double rho = dL / dUpper;
+	double Np = n - K + 3 / C;
+	double A = 3 + C;
+	double B = A + rho;
+	
+	mat One = ones(n, n);
+	mat I = eye(n, n);
+
+	mat JK(I);
+	for (int i = 1; i <= K; i++) {
+		JK.submat(2 * (i - 1), 2 * (i - 1), 2 * i - 1, 2 * i - 1) = ones(2,2) - eye(2, 2);
+	}
+
+	mat DK(JK * newDistMat);
+
+	DK.diag().zeros();
+
+	mat IK(JK + I);
+
+	vec vxi_col = solve(B + (n - K) * C * One + (n - K - 1) * A * IK - B * I + D * (DK + DK.t()), ones(n)) * C * Np;
+
+	mat v(repmat(vxi_col, 1, n - K));
+
+	v += (randu(n, n - K) - 0.5) * 10e-10;
+
+	mat u(invTransormFunc(u_zero, v));
+
+	double stopC1 = pow(10, -1 * E);
+	double stopC2 = pow(10, -1.5 * E);
+	double maxDiffV = 1;
+	bool unstable = false;
+	double u_e = invTransormFunc(u_zero, stopC1);
+	double ib = C * Np;
+
+	rowvec sumVcol = arma::sum(v, 0);
+	colvec  sumVrow = arma::sum(v, 1);
+
+	double sumV = sum(sumVcol);
+	mat dU(zeros(n, n - K));
+
+	int iter = 0;
+	int maxIter = 1000;
+
+	while (iter < maxIter && (maxDiffV > stopC1 || (maxDiffV > stopC1 && unstable))) {
+		double dt = 10e100;
+		mat TV = weightMatrixTimesVvectorized(sumVrow, sumVcol, sumV, v, n, K, newDistMat, A, B, C, D);
+		dU = TV + ib;
+		mat dV = 2 / u_zero * v % (1 - v) % dU;
+		umat interiorV = u > u_e && u < -u_e;
+		umat criteria1 = interiorV && dV < 0;
+		if (any(any(criteria1))) {
+			mat VdV = -v / dV;
+			dt = std::min(dt, VdV(find(criteria1)).min());
+		}
+
+		umat criteria2 = interiorV && dV > 0;
+
+		if (any(any(criteria2))) {
+			mat antVdV = (1 - v) / dV;
+			dt = std::min(dt, antVdV(find(criteria2)).min());
+		}
+
+		umat criteria3 = (u <= u_e && dU > 0) || (u >= -u_e && dU < 0);
+
+		unstable = any(any(criteria3));
+
+		if (unstable) {
+			dt = min(dt, min(min((abs(u(find(criteria3))) - u_e) / abs(dU(find(criteria3))))));
+		}
+
+		double S1 = sum(sum(dV % dU));
+		
+		sumVcol = sum(dV, 0);
+		sumVrow = sum(dV, 1);
+		sumV = sum(sumVcol);
+
+		mat TdV = weightMatrixTimesVvectorized(sumVrow, sumVcol, sumV, dV, n, K, newDistMat, A, B, C, D);
+
+		double S2 = -sum(sum(dV % TdV));
+
+		bool sw_optimal = false;
+		if (S2 > 0) {
+			dt = min(dt, S1 / S2);
+			sw_optimal = true;
+		}
+
+		if (iter < R_iter && !sw_optimal) {
+			dt = Q * dt;
+		}
+
+		mat vPrev(v);
+
+		umat borderV = (u <= u_e) || (u >= -u_e);
+
+		uvec uBorder(find(borderV));
+
+		u(uBorder) = u(uBorder) + dU(uBorder) * dt;
+
+		v(uBorder) = transferFcn(u_zero, u(uBorder));
+		u(find(borderV && u <= u_e)).fill(u_e);
+		v(find(borderV && u <= u_e)).fill(0); // Stays in the border
+		u(find(borderV && u >= -u_e)).fill(-u_e);
+		v(find(borderV && u >= -u_e)).fill(1); // Stays in the border
+
+
+		uvec VupdateInInterior = find(interiorV && (vPrev + dV * dt > stopC1) && (vPrev + dV * dt < 1 - stopC1));
+		v(VupdateInInterior) = vPrev(VupdateInInterior) + dV(VupdateInInterior) * dt; // Stays in the interior
+
+		uvec VupdateInBorder0 = find(interiorV && (vPrev + dV*dt <= stopC1));
+		uvec VupdateInBorder1 = find(interiorV && (vPrev + dV*dt >= 1 - stopC1));
+
+		u(VupdateInBorder0).fill(u_e);
+		u(VupdateInBorder1).fill(-u_e);
+		v(VupdateInBorder0).fill(0);
+		v(VupdateInBorder1).fill(1);
+
+		maxDiffV = max(max(abs(vPrev - v)));
+
+		sumVcol = sum(v, 0);
+		sumVrow = sum(v, 1);
+		sumV = sum(sumVcol);
+
+		iter = iter + 1;
+	}
+	retu
+		rn v;
 }
 
 
 vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, vector<vector<int>>& chains) {
     vector<vector<double>> newD = getDistanceMatrixForSecondPhase(originalDist, chains);
-/*
+
 	printMatrix<double>(newD);
-*/
+
 
 	int K = 0;
-
+	int n = 0;
 	for(int i = 0; i < chains.size(); i++) {
+		n++;
 		if (chains[i].size() > 1) {
 			K++;
+			n++;
 		}
 	}
 	double minD = INT_MAX;
@@ -322,13 +569,13 @@ vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, ve
         }
     }
      
-    double C = 0.001;
-    double N = newD.size() + K + 3/C;
+    double C = 0.00001;
+    double N = double(n - K) + 3/C;
     double A = 3 + C;
     double B = A + minD/maxD;
     double D = 1 / maxD;
 
-    vector<vector<double>> v = chnSimulation(originalDist, A, B, C, D, N, newD.size(), K, chains);
+    vector<vector<double>> v = chnSimulation(newD, A, B, C, D, N, n, K, chains);
     cout << "MATRIX V:" << endl;
 
     printMatrix<double>(v);

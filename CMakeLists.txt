@@ -15,4 +15,9 @@ add_executable(main ${SOURCE_EXE})	# Создает исполняемый фа�
 add_subdirectory(nwta)				# Добавление подпроекта, указывается имя дирректории
 add_subdirectory(dnq)				# Добавление подпроекта, указывается имя дирректории
 
+find_package(Armadillo CONFIG REQUIRED)
+include_directories(${ARMADILLO_INCLUDE_DIRS})
+
+
 target_link_libraries(main nwta dnq)	# Линковка программы с библиотекой
+target_link_libraries(main ${ARMADILLO_LIBRARIES})

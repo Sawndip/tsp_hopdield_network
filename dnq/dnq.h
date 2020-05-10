@@ -1,5 +1,6 @@
 #include <vector>
-
+#include <armadillo>
+using namespace arma; 
 using namespace std;
 
 vector<vector<double>> closestNeigboursMatrix(vector<vector<double>>& d, int tau);
@@ -22,3 +23,4 @@ vector<vector<double>> chnSimulation(
 );
 
 vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, vector<vector<int>>& chains);
+mat fromMatlab(vector<vector<int>>& chains, vector<vector<double>>& dist, double C);

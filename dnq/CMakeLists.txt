@@ -9,4 +9,9 @@ set(SOURCE_LIB dnq.cpp)		# Установка переменной со спис
 include_directories(nwta)			# Расположение заголовочных файлов
 
 add_library(dnq STATIC ${SOURCE_LIB})# Создание статической библиотеки
+find_package(Armadillo CONFIG REQUIRED)
+include_directories(${ARMADILLO_INCLUDE_DIRS})
+
+target_link_libraries(dnq ${ARMADILLO_LIBRARIES})
+
 target_link_libraries(dnq nwta)	# Линковка программы с библиотекой

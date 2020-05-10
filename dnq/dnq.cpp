@@ -30,7 +30,7 @@ vector<vector<double>> closestNeigboursMatrix(vector<vector<double>>& d, int tau
 	vector<int> temp(tau);
 	iota(begin(temp), end(temp), 0);
 	vector<vector<int>> closeNeighborIdx(n, vector<int>(tau, 0));
-	vector<vector<double>> closeNeighbor(n, vector<double>(n, 100.));
+	vector<vector<double>> closeNeighbor(n, vector<double>(n, pow(10, 5)));
 	
 	for (int i = 0; i < n; i++) {
 		closeNeighborIdx[i] = findBestIndices(d[i], tau);
@@ -151,8 +151,6 @@ vector<vector<double>> generateRandMatr(int n, int m) {
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			startVal[i][j] = 0.5 + pow(10, -7) * ((double)rand() / RAND_MAX - 0.5);
-
-			//startVal[i][j] = 0.5 + ((double)rand() / RAND_MAX - 0.5);
 		}
 	}
 
@@ -291,7 +289,7 @@ vector<vector<double>> chnSimulation(vector<vector<double>>& d, double A, double
         cont = maxDif > eps;
 		iter++;
 	}
-	cout << "ITER:: " << iter << endl;
+	std::cout << "ITER:: " << iter << endl;
 	return v;
 }
 
@@ -337,33 +335,77 @@ mat weightMatrixTimesVvectorized(colvec& sumVrow, rowvec& sumVcol, double sumV, 
 
 	dxcy.rows(0, 2 * K - 1) = dxcy.rows(reOrder);
 
-	// Шляпа какая-то если не буде работать, надо будет разобраться с этой хуйнкй
-	//dycx(1:length(dycx) + 1 : end) = 0;
-	//dxcy(1:length(dycx) + 1 : end) = 0;
-
 	mat termD = dxcy * v.cols(deltaNext) + dycx * v.cols(deltaPrev);
 
 	return -A * termA - B * termB - C * sumV - D * termD;
 }
 
-mat fromMatlab(vector<vector<int>>& chains, vector<vector<double>>& dist, double C) {
+std::pair<mat, double> computeTour(double dUaux, mat& distanceMat, mat& v, double E, int n, int K) {
+	mat d = dUaux * distanceMat;
+	v(find(v > 1 - pow(10, -1 * E))).fill(1.);
+	v(find(v < pow(10, -1 * E))).fill(0.);
+
+	if (all(any(v == 1, 0)) && arma::sum(arma::sum(v)) == n - K) {
+		uvec provisionalOrder(n-K);
+		for (int i = 0; i < n - K; i++) {
+			provisionalOrder(i) = v.col(i).index_max();
+		}
+		mat visitOrder = zeros(1, n);
+		int iNew = 0;
+		int iOld = 0;
+
+		while (iNew < n) {
+			visitOrder(iNew) = provisionalOrder(iOld);
+			if (visitOrder(iNew) < 2 * K) {
+				if (!mod(visitOrder(iNew), 2)) {
+					visitOrder(iNew + 1) = visitOrder(iNew) + 1;
+					iNew++;
+				}
+				else {
+					visitOrder(iNew + 1) = visitOrder(iNew) - 1;
+					iNew++;
+				}
+			}
+			iNew++;
+			iOld++;
+		}
+		double sum = 0;
+		for (int i = 1; i < size(visitOrder); i++) {
+			sum += d(visitOrder(i - 1), visitOrder(i));
+		}
+		sum += d(visitOrder(0), visitOrder(size(visitOrder) - 1));
+		return std::make_pair(visitOrder, sum);
+	}
+	else {
+		return std::make_pair(mat(1, 1), -1);
+	}
+}
+
+std::pair<vec, double> secondPhaseSim(vector<vector<int>>& chains, vector<vector<double>>& dist, double C) {
 	C = 1e-5;
 	double energy = 0.;
 	int R_iter = 20;
 	double Q = 0.8;
 	double E = 13;
 	double u_zero = 0.3;
-
+	double inChainSum = 0;
 	vector<double> chainsEndpoint;
 	vector<double> singleCities;
-
+	vector<vector<int>> trueChains;
 	int n = 0;
 	int K = 0;
+
 	for (int i = 0; i < chains.size(); i++) {
 		n++;
 		if (chains[i].size() > 1) {
 			chainsEndpoint.push_back(chains[i][0]);
 			chainsEndpoint.push_back(chains[i][chains[i].size() - 1]);
+			trueChains.push_back(chains[i]);
+			for (int j = 1; j < chains[i].size(); j++) {
+				inChainSum += dist[chains[i][j-1]][chains[i][j]];
+			}
+			inChainSum += dist[chains[i][0]][chains[i][chains[i].size() - 1]];
+
 			K++;
 			n++;
 		}
@@ -449,7 +491,7 @@ mat fromMatlab(vector<vector<int>>& chains, vector<vector<double>>& dist, double
 	rowvec sumVcol = arma::sum(v, 0);
 	colvec  sumVrow = arma::sum(v, 1);
 
-	double sumV = sum(sumVcol);
+	double sumV = arma::sum(sumVcol);
 	mat dU(zeros(n, n - K));
 
 	int iter = 0;
@@ -482,15 +524,15 @@ mat fromMatlab(vector<vector<int>>& chains, vector<vector<double>>& dist, double
 			dt = min(dt, min(min((abs(u(find(criteria3))) - u_e) / abs(dU(find(criteria3))))));
 		}
 
-		double S1 = sum(sum(dV % dU));
+		double S1 = arma::sum(arma::sum(dV % dU));
 		
-		sumVcol = sum(dV, 0);
-		sumVrow = sum(dV, 1);
-		sumV = sum(sumVcol);
+		sumVcol = arma::sum(dV, 0);
+		sumVrow = arma::sum(dV, 1);
+		sumV = arma::sum(sumVcol);
 
 		mat TdV = weightMatrixTimesVvectorized(sumVrow, sumVcol, sumV, dV, n, K, newDistMat, A, B, C, D);
 
-		double S2 = -sum(sum(dV % TdV));
+		double S2 = -arma::sum(arma::sum(dV % TdV));
 
 		bool sw_optimal = false;
 		if (S2 > 0) {
@@ -530,14 +572,43 @@ mat fromMatlab(vector<vector<int>>& chains, vector<vector<double>>& dist, double
 
 		maxDiffV = max(max(abs(vPrev - v)));
 
-		sumVcol = sum(v, 0);
-		sumVrow = sum(v, 1);
-		sumV = sum(sumVcol);
+		sumVcol = arma::sum(v, 0);
+		sumVrow = arma::sum(v, 1);
+		sumV = arma::sum(sumVcol);
 
 		iter = iter + 1;
 	}
-	retu
-		rn v;
+	std::pair<mat, double> res = computeTour(dUaux, newDistMat, v, E, n, K);
+	if (res.second == -1) {
+		return res;
+	}
+	mat chainsOrder = res.first;
+	vec finalTour = zeros(dist.size());
+	int iNew = 0;
+
+	for (int i = 0; i < size(res.first); i++) {
+		finalTour(iNew) = chainsOrder(i);
+		iNew++;
+
+		if (chainsOrder(i) < 2 * K) {
+			for (int j = 0; j < trueChains.size(); j++) {
+				if (trueChains[j][0] == chainsOrder(i)) {
+					for (int k = 1; k < trueChains[j].size() - 1; k++) {
+						finalTour(iNew) = trueChains[j][k];
+						iNew++;
+
+					};
+				}
+				else if (trueChains[j][trueChains[j].size() - 1] == chainsOrder(i)) {
+					for (int k = trueChains[j].size() - 2; k <= 0; k++) {
+						finalTour(iNew) = trueChains[j][k];
+						iNew++;
+					};
+				}
+			}
+		}
+	}
+	return std::make_pair(finalTour, res.second + inChainSum);
 }
 
 
@@ -576,16 +647,6 @@ vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, ve
     double D = 1 / maxD;
 
     vector<vector<double>> v = chnSimulation(newD, A, B, C, D, N, n, K, chains);
-    cout << "MATRIX V:" << endl;
-
-    printMatrix<double>(v);
-	//for (int x = 0; x < newD.size(); x++) {
-	//	for (int i = 0; i < newD.size() - K; i++) {
-	//		if (v[x][i] != 1) {
-	//			
-	//		}
-	//	}
-	//}
 	unordered_map<int, vector<int>> chainsMap;
 
 	for (int i = 0; i < chains.size(); i++) {
@@ -596,13 +657,12 @@ vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, ve
 	}
 
 	vector<int> asd = getNewProblemSize(chains);
-    cout << "NEW CHAINS: " << endl;
 	for (int i = 0; i < v[0].size(); i++) {
 		for (int x = 0; x < v.size(); x++) {
 			if (v[x][i] == 1) {
 				vector<int> chain = chainsMap[asd[x]];
 				for (int k = 0; k < chain.size(); k++) {
-					cout << chain[k] << endl;
+					std::cout << chain[k] << endl;
 				}
 			}
 		}

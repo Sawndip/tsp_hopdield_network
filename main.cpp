@@ -56,50 +56,55 @@ int main(int argc, char** argv)
     double p = pow(10,6);
     int iStart = 0;
     double deltaT = 0.025;
-
-    string name = "gr17";
-    vector<vector<double>> dist = getDistMatrix(name);
-    printMatrix(dist);
-    vector<vector<double>> distWithNalog = getDistMatrixWithNalog(dist, iStart, p);
-    printMatrix(distWithNalog);
-    vector<vector<double>> closeNeighborsDist = closestNeigboursMatrix(dist, 3);
-    printMatrix(closeNeighborsDist);
-
-    int n = dist.size();
-
     time_t t;
     srand((unsigned)time(&t));
 
-    for (int i = 0; i < 10; i++) {
-        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    vector<string> names = { "gr17", "gr24", "fri26", "eil51", "ch130", "d198", "a280", "pcb442", "pr1002" };
+    //vector<string> names = { "gr17", "fri26", "eil51" };
+    for (int idx = 0; idx < names.size(); idx++) {
+        int iters = 10;
+        double meanLen = 0;
+        double minLen = pow(10, 10);
+        double maxLen = 0;
 
-        vector<vector<double>> u(generateRandMatr(n));
-        vector<vector<double>> res(solveNwta(u, closeNeighborsDist, n, beta, eta, lambda, tau, eps, deltaT));
-        vector<vector<int>> chains(wtaWithCycles(res, n));
-        cout << "CHAINS: " << endl;
-        printMatrix<int>(chains);
-        int sum = 0;
-        for (int i = 0; i < chains.size(); i++) {
-            if (chains[i].size() == 1) {
-                sum++;
+        double minTime = pow(10, 10);
+        double maxTIme = 0;
+        double meanTime = 0;
+
+        string name = names[idx];
+        vector<vector<double>> dist = getDistMatrix(name);
+        vector<vector<double>> distWithNalog = getDistMatrixWithNalog(dist, iStart, p);
+        vector<vector<double>> closeNeighborsDist = closestNeigboursMatrix(dist, 3);
+        int n = dist.size();
+
+        for (int iter = 0; iter < iters; iter++) {
+            std::clock_t c_start = std::clock();
+
+            vector<vector<double>> u(generateRandMatr(n));
+            vector<vector<double>> res(solveNwta(u, closeNeighborsDist, n, beta, eta, lambda, tau, eps, deltaT));
+            vector<vector<int>> chains(wtaWithCycles(res, n));
+            double len = 0;
+            if (chains.size() == 1) {
+                len = getLenByPath(dist, chains[0]);
+            } else {
+                std::pair<vec, double> result = secondPhaseSim(chains, dist, 1e-05);
+                len = result.second;
             }
-        };
-        if (sum == n) {
-            cout << "BROKEN" << endl;
-        } else if (chains.size() == 1) {
-            cout << "SOLVED" << endl;
-            for (int i = 0; i < chains[0].size(); i++) {
-                cout << chains[0][i] << ' ';
+            std::clock_t c_end = std::clock();
+            double t = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+
+            meanLen += len;
+            if (minLen > len) {
+                minLen = len;
             }
-            cout << endl;
-        } else {
-            mat v = fromMatlab(chains, dist, 1e-05);
-            cout << v << endl;
+            meanTime += t;
+            if (minTime > t) {
+                minTime = t;
+            }
         }
 
-        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << " s" << std::endl;
-        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
+        std::cout << "Name: " << name << endl << "Min len: " << minLen << "; Mean len: " << meanLen/iters << "; Min time: " << minTime << "; Mean time: " << meanTime / iters << endl;
     }
+
     return 0;
 }

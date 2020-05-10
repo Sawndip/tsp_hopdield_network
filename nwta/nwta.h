@@ -39,3 +39,4 @@ void printMatrix(vector<vector<T>>& m) {
 vector<vector<double>> generateRandMatr(int n);
 int getMaxIdx(vector<double >& v);
 void fillColWithZeros(vector<vector<double>>& v, int colIdx);
+double getLenByPath(vector<vector<double>>& d, vector<int> path);

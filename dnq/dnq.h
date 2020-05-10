@@ -23,4 +23,4 @@ vector<vector<double>> chnSimulation(
 );
 
 vector<vector<double>> solveSecondPhase(vector<vector<double>>& originalDist, vector<vector<int>>& chains);
-mat fromMatlab(vector<vector<int>>& chains, vector<vector<double>>& dist, double C);
+std::pair<vec, double> secondPhaseSim(vector<vector<int>>& chains, vector<vector<double>>& dist, double C);
